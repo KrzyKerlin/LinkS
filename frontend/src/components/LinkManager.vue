@@ -28,6 +28,23 @@
                         </button>
                     </div>
                 </form>
+
+                <!-- Links List-->
+                <div class="mt-8 space-y-4">
+                    <div v-for="link in links" :key="link.id" 
+                    class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex items-center hover:bg-white/90 transition-all duration-300">
+                        <div class="flex-grow">
+                            <h3 class="text-xl font-bold text-indigo-800 mb-1">{{ link.title }}</h3>
+                            <a :href="link.url" target="_blank" 
+                            class="text-blue-600 hover:text-blue-800 hover:underline truncate block max-w-full">
+                                {{ link.url }}
+                            </a>
+                        </div>
+                        <div class="ml-4 text-sm text-gray-500">
+                            {{ new Date(link.id).toLocaleDateString() }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -47,22 +64,31 @@
         title: '',
         url: ''
     })
-  
+
+    // Link array - will store all added links
     const links = ref<Link[]>([])
   
+    // Function adding a new link
     const addLink = () => {
+        // Prevent adding empty links
+        if (!newLink.value.title.trim() || !newLink.value.url.trim()) return
+
+        // Add https:// if not present
         if (!newLink.value.url.startsWith('http://') && !newLink.value.url.startsWith('https://')) {
-        newLink.value.url = 'https://' + newLink.value.url
+            newLink.value.url = 'https://' + newLink.value.url
         }
     
+        // Creates a new link object
         const link: Link = {
             ...newLink.value,
             id: Date.now(),
             order: links.value.length + 1
         }
+       
+        // Adds a new link to the links array
+        links.value.push(link)   
     
-        links.value.push(link)
-    
+        // Resets the form to empty values
         newLink.value = {
             title: '',
             url: ''
