@@ -14,10 +14,19 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
                         </div>
               
-                        <div class="md:col-span-8">
+                        <div class="md:col-span-5">
                             <label for="url" class="text-sm font-medium text-indigo-600 mb-2">URL</label>
                             <input id="url" v-model="newLink.url" placeholder="Enter URL..." required 
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                        </div>
+
+                        <div class="md:col-span-3">
+                            <label for="category" class="text-sm font-medium text-indigo-600 mb-2">Category</label>
+                            <select id="category" v-model="newLink.category" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                <option value="WATCH">WATCH</option>
+                                <option value="READ">READ</option>
+                            </select>
                         </div>
                     </div>
             
@@ -32,17 +41,16 @@
                 <!-- Links List-->
                 <div class="mt-8 space-y-4">
                     <div v-for="link in links" :key="link.id" 
-                    class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex items-center hover:bg-white/90 transition-all duration-300">
-                        <div class="flex-grow">
-                            <h3 class="text-xl font-bold text-indigo-800 mb-1">{{ link.title }}</h3>
-                            <a :href="link.url" target="_blank" 
-                            class="text-blue-600 hover:text-blue-800 hover:underline truncate block max-w-full">
-                                {{ link.url }}
-                            </a>
+                    class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex flex-col hover:bg-white/90 transition-all duration-300">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-bold text-indigo-800">{{ link.title }}</h3>
+                            <span :class="{
+                            'bg-purple-600': link.category === 'WATCH', 
+                            'bg-green-600': link.category === 'READ' }" 
+                            class="text-white px-2 py-1 rounded-md text-xs uppercase">{{ link.category }}</span>
                         </div>
-                        <div class="ml-4 text-sm text-gray-500">
-                            {{ new Date(link.id).toLocaleDateString() }}
-                        </div>
+                        <a :href="link.url" target="_blank" 
+                        class="text-blue-600 hover:text-blue-800 hover:underline">{{ link.url }}</a>
                     </div>
                 </div>
             </div>
@@ -57,12 +65,14 @@
         id: number
         title: string
         url: string
+        category: 'WATCH' | 'READ'
         order?: number
     }
   
     const newLink = ref({
         title: '',
-        url: ''
+        url: '',
+        category: 'WATCH' as 'WATCH' | 'READ'
     })
 
     // Link array - will store all added links
@@ -91,7 +101,8 @@
         // Resets the form to empty values
         newLink.value = {
             title: '',
-            url: ''
+            url: '',
+            category: 'WATCH'
         }
     }
 </script>
