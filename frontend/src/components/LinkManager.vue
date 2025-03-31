@@ -31,21 +31,33 @@
                     </div>
             
                     <div class="flex justify-center">
-                        <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center space-x-2" >
-                            <span>+</span>
-                            <span>Add Link</span>
+                        <button type="submit" class="px-6 py-2 bg-indigo-500 text-gray-100 rounded-lg hover:bg-gradient-to-br from-purple-500 to-blue-500 cursor-pointer transition-colors flex items-center space-x-2 group" >
+                            <span class="group-hover:text-white">+</span>
+                            <span class="group-hover:text-white">Add Link</span>
                         </button>
                     </div>
                 </form>
 
+                <!-- Filter By Category -->
+                <div class="mt-8">
+                    <h2 class="text-xl font-bold text-indigo-800 mb-4">Filter by Category</h2>
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <button @click="setFilter('all')" 
+                        class="py-2 px-4 text-indigo-700 rounded-lg flex items-center justify-center transition-colors"> All </button>
+                        <button @click="setFilter('watch')" 
+                        class="py-2 px-4 text-indigo-700 rounded-lg flex items-center justify-center transition-colors"> Watch </button>
+                        <button @click="setFilter('read')" 
+                        class="py-2 px-4 text-indigo-700 rounded-lg flex items-center justify-center transition-colors"> Read </button>
+                    </div>
+                </div>
+
                 <!-- Links List-->
-                <div class="mt-8 space-y-4">
-                    <div v-for="link in links" :key="link.id" 
+                <div class="space-y-4">
+                    <div v-for="link in filteredLinks" :key="link.id" 
                     class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex flex-col hover:bg-white/90 transition-all duration-300">
                         <div class="flex justify-between items-center mb-1">
                             <h3 class="text-xl font-bold text-indigo-800">{{ link.title }}</h3>
-                            <span :class="{
-                            'bg-purple-600': link.category === 'WATCH', 
+                            <span :class="{'bg-purple-600': link.category === 'WATCH', 
                             'bg-green-600': link.category === 'READ' }" 
                             class="text-white px-2 py-1 rounded-md text-xs uppercase">{{ link.category }}</span>
                         </div>
@@ -59,7 +71,7 @@
 </template>
   
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { ref, computed  } from 'vue'
   
     interface Link {
         id: number
@@ -104,5 +116,20 @@
             url: '',
             category: 'WATCH'
         }
+    }
+
+    // Filtered links by category 
+    const activeFilter = ref('all')
+    const filteredLinks = computed(() => {
+        if (activeFilter.value === 'all') {
+            return links.value
+        }
+        return links.value.filter(link => 
+            link.category === activeFilter.value.toUpperCase()
+        )
+    })
+
+    const setFilter = (filter) => {
+        activeFilter.value = filter
     }
 </script>
