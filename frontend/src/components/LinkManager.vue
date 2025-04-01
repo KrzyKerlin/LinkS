@@ -21,12 +21,30 @@
                         </div>
 
                         <div class="md:col-span-3">
-                            <label for="category" class="text-sm font-medium text-indigo-600 mb-2">Category</label>
-                            <select id="category" v-model="newLink.category" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                                <option value="WATCH">WATCH</option>
-                                <option value="READ">READ</option>
-                            </select>
+                            <div class="flex space-x-2">
+                                <!-- WATCH option -->
+                                <label class="relative flex-1 cursor-pointer">
+                                    <input type="radio" name="category" value="WATCH" v-model="newLink.category" class="absolute opacity-0 w-0 h-0" />
+                                    <div :class="newLink.category === 'WATCH' ? 
+                                    'bg-gradient-to-br from-purple-500 to-blue-500 border-indigo-500 text-white' : 
+                                    'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
+                                    class="flex flex-col items-center justify-center py-3 px-2 border-2 rounded-lg transition-all duration-200">
+                                        <span class="text-xl mb-1">▶</span>
+                                        <span class="font-medium text-sm">WATCH</span>
+                                    </div>
+                                </label>        
+                                <!-- READ option -->
+                                <label class="relative flex-1 cursor-pointer">
+                                    <input type="radio" name="category" value="READ" v-model="newLink.category" class="absolute opacity-0 w-0 h-0" />
+                                    <div :class="newLink.category === 'READ' ? 
+                                    'bg-gradient-to-br from-purple-500 to-blue-500 border-indigo-500 text-white' : 
+                                    'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
+                                    class="flex flex-col items-center justify-center py-3 px-2 border-2 rounded-lg transition-all duration-200">
+                                        <span class="text-xl mb-1">📄</span>
+                                        <span class="font-medium text-sm">READ</span>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
             
@@ -43,11 +61,20 @@
                     <h2 class="text-xl font-bold text-indigo-800 mb-4">Filter by Category</h2>
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <button @click="setFilter('all')" 
-                        class="py-2 px-4 text-indigo-700 rounded-lg flex items-center justify-center transition-colors"> All </button>
+                        :class="{'bg-indigo-500 text-white': activeFilter === 'all', 'bg-white text-indigo-500': activeFilter !== 'all'}"
+                        class="py-2 px-4 rounded-lg flex items-center justify-center transition-colors">
+                            <span class="mr-2">☰</span> All
+                        </button>
                         <button @click="setFilter('watch')" 
-                        class="py-2 px-4 text-indigo-700 rounded-lg flex items-center justify-center transition-colors"> Watch </button>
+                        :class="{'bg-indigo-500 text-white': activeFilter === 'watch', 'bg-white text-indigo-500': activeFilter !== 'watch'}"
+                        class="py-2 px-4 rounded-lg flex items-center justify-center transition-colors">
+                            <span class="mr-2">▶</span> Watch
+                        </button>
                         <button @click="setFilter('read')" 
-                        class="py-2 px-4 text-indigo-700 rounded-lg flex items-center justify-center transition-colors"> Read </button>
+                        :class="{'bg-indigo-500 text-white': activeFilter === 'read', 'bg-white text-indigo-500': activeFilter !== 'read'}"
+                        class="py-2 px-4 rounded-lg flex items-center justify-center transition-colors">
+                            <span class="mr-2">📄</span> Read
+                        </button>
                     </div>
                 </div>
 
