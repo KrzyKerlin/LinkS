@@ -21,6 +21,11 @@ dist-ssr
 coverage
 *.local
 
+# Documentation 
+/docs
+/frontend/docs
+/backend/docs
+
 # Cypress
 /cypress/videos/
 /cypress/screenshots/
