@@ -90,7 +90,25 @@
                         </div>
                         <a :href="link.url" target="_blank" 
                         class="text-blue-600 hover:text-blue-800 hover:underline">{{ link.url }}</a>
+                        <div class="link-actions">
+                            <button @click="confirmDelete(link.id)" class="text-gray-500 rounded-md" aria-label="Delete link"> Delete </button>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!-- Delete Confirmation Modal -->
+        <div v-if="showConfirmModal" class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" @click="cancelDelete">
+            <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg" @click.stop>
+                <div class="modal-header">
+                    <h3 class="delete-link-title font-bold text-indigo-500">{{ links.find(link => link.id === linkToDelete)?.title }}</h3>
+                </div>
+                <div class="modal-content">
+                    <p>Are you sure you want to delete this link?</p>
+                    <p v-if="linkToDelete !== null" >  </p>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button" @click="deleteLink" class=" justify-center rounded-md bg-red-600 px-3 py-2 text-sm text-white shadow-xs"> Delete </button>
                 </div>
             </div>
         </div>
@@ -115,7 +133,9 @@
     })
 
     // Link array - will store all added links
-    const links = ref<Link[]>([])
+    const links = ref<Link[]>([]);
+    const showConfirmModal = ref(false);
+    const linkToDelete = ref<number | null>(null);
   
     // Function adding a new link
     const addLink = () => {
@@ -159,4 +179,23 @@
     const setFilter = (filter) => {
         activeFilter.value = filter
     }
+
+    // Delete link and show modal
+    const confirmDelete = (id: number) => {
+      linkToDelete.value = id;
+      showConfirmModal.value = true;
+    };
+    
+    const cancelDelete = () => {
+      showConfirmModal.value = false;
+      linkToDelete.value = null;
+    };
+
+    const deleteLink = () => {
+      if (linkToDelete.value === null) return;
+      
+      links.value = links.value.filter(link => link.id !== linkToDelete.value);
+      showConfirmModal.value = false;
+      linkToDelete.value = null;
+    };
 </script>
