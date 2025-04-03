@@ -83,32 +83,62 @@
                     <div v-for="link in filteredLinks" :key="link.id" 
                     class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex flex-col hover:bg-white/90 transition-all duration-300">
                         <div class="flex justify-between items-center mb-1">
-                            <h3 class="text-xl font-bold text-indigo-800">{{ link.title }}</h3>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                                <h3 class="text-xl font-bold text-indigo-800">{{ link.title }}</h3>
+                            </div>
                             <span :class="{'bg-purple-600': link.category === 'WATCH', 
                             'bg-green-600': link.category === 'READ' }" 
-                            class="text-white px-2 py-1 rounded-md text-xs uppercase">{{ link.category }}</span>
+                            class="text-white px-2 py-1 rounded-md text-xs uppercase font-medium">
+                            {{ link.category }}
+                            </span>
                         </div>
-                        <a :href="link.url" target="_blank" 
-                        class="text-blue-600 hover:text-blue-800 hover:underline">{{ link.url }}</a>
-                        <div class="link-actions">
-                            <button @click="confirmDelete(link.id)" class="text-gray-500 rounded-md" aria-label="Delete link"> Delete </button>
+                        <a :href="link.url" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline flex items-center mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                            {{ link.url }}
+                        </a>
+                        <div class="link-actions mt-2">
+                            <button @click="confirmDelete(link.id)" 
+                            class="bg-gray-200 text-indigo-500 px-3 py-1.5 rounded-md hover:bg-red-600 hover:text-white transition-colors duration-200 flex items-center cursor-pointer text-sm" 
+                            aria-label="Delete link">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg> 
+                                Delete
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Delete Confirmation Modal -->
-        <div v-if="showConfirmModal" class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" @click="cancelDelete">
-            <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg" @click.stop>
-                <div class="modal-header">
-                    <h3 class="delete-link-title font-bold text-indigo-500">{{ links.find(link => link.id === linkToDelete)?.title }}</h3>
+        <!-- Delete Confirmation Modal -->       
+        <div v-if="showConfirmModal" class="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity z-50" aria-hidden="true" @click="cancelDelete">
+            <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg" @click.stop>
+                <div class="modal-header bg-indigo-500 px-6 py-4 flex items-center justify-center">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 class="font-bold text-lg text-white">Confirm Deletion</h3>
+                    </div>
                 </div>
-                <div class="modal-content">
-                    <p>Are you sure you want to delete this link?</p>
-                    <p v-if="linkToDelete !== null" >  </p>
+                <div class="modal-content px-6 py-8 text-center">
+                    <p class="text-gray-700 mb-4">Are you sure you want to delete this link?</p>
+                    <p v-if="linkToDelete !== null" class="text-indigo-500 font-medium text-lg mt-2">
+                    "{{ links.find(link => link.id === linkToDelete)?.title }}"
+                    </p>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button type="button" @click="deleteLink" class=" justify-center rounded-md bg-red-600 px-3 py-2 text-sm text-white shadow-xs"> Delete </button>
+                <div class="bg-gray-50 px-6 py-4 flex justify-center gap-4">
+                    <button type="button" @click="cancelDelete" class="rounded-md border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+                    Cancel
+                    </button>
+                    <button type="button" @click="deleteLink" class="rounded-md bg-gray-200 px-5 py-2 text-sm font-medium text-indigo-500 shadow-sm hover:bg-red-600 hover:text-white transition-colors duration-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Delete
+                    </button>
                 </div>
             </div>
         </div>
