@@ -167,6 +167,11 @@
         if (savedLinks) {
             links.value = JSON.parse(savedLinks);
         }
+        // Remembering filtering in localStorage
+        const savedFilter = localStorage.getItem('activeFilter');
+        if (savedFilter) {
+            activeFilter.value = savedFilter;
+        }
     });
     
     // Automatically save links to localStorage 
@@ -215,6 +220,8 @@
 
     const setFilter = (filter) => {
         activeFilter.value = filter
+        // Saving active filter to localStorage
+        localStorage.setItem('activeFilter', filter);
     }
 
     // Delete link and show modal
