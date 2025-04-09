@@ -140,7 +140,7 @@
 </template>
   
 <script setup lang="ts">
-    import { ref, computed  } from 'vue'
+    import { ref, computed, onMounted, watch } from 'vue'
   
     interface Link {
         id: number
@@ -160,6 +160,19 @@
     const links = ref<Link[]>([]);
     const showConfirmModal = ref(false);
     const linkToDelete = ref<number | null>(null);
+    
+    // Loading links from localStorage when starting the app
+    onMounted(() => {
+        const savedLinks = localStorage.getItem('myLinks');
+        if (savedLinks) {
+            links.value = JSON.parse(savedLinks);
+        }
+    });
+    
+    // Automatically save links to localStorage 
+    watch(links, (newLinks) => {
+        localStorage.setItem('myLinks', JSON.stringify(newLinks));
+    }, { deep: true });
   
     // Function adding a new link
     const addLink = () => {
