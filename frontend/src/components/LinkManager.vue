@@ -115,6 +115,8 @@
                                     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                                 </svg> 
                             </button>
+                            <!-- URL Message for share link -->
+                            <Toast :message="toastMessage" :visible="toastVisible" :is-error="toastIsError" />
                             <button @click="confirmDelete(link.id)" class="p-2 rounded-full bg-gray-100 hover:bg-red-500 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Delete link">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -159,6 +161,7 @@
   
 <script setup lang="ts">
     import { ref, computed, onMounted, watch } from 'vue'
+    import Toast from './ToastMessageUrl.vue';
   
     interface Link {
         id: number
@@ -257,26 +260,57 @@
         }
     }
 
-    // Share link
-    const shareLink = (link) => {
+    // Checking if the URL is correct
+    const isValidURL = (url) => {
+        try {
+            new URL(url);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    };
+
+    // Share link with URL validation
+    function shareLink(link) {
+        if (!isValidURL(link.url)) {
+            showToast('Invalid URL');
+            return;
+        }
         if (navigator.share) {
             navigator.share({
-                title: link.title,
-                url: link.url
+            title: link.title,
+            url: link.url
             })
-            .then(() => console.log('Link udostępniony!'))
-            .catch((error) => console.error('Błąd udostępniania:', error));
+        .then(function() {
+            console.log('Link udostępniony!');
+        })
+        .catch(function(error) {
+            console.error('Błąd udostępniania:', error);
+        });
         } else {
         // copy to clipboard
-            navigator.clipboard.writeText(link.url)
-            .then(() => {
-                alert('Link skopiowany do schowka!');
+        navigator.clipboard.writeText(link.url)
+            .then(function() {
+                showToast('Link copy to clipboard!');
             })
-            .catch((err) => {
+            .catch(function(err) {
                 console.error('Nie można skopiować:', err);
             });
         }
     }
+
+    const toastVisible = ref(false);
+    const toastMessage = ref('');
+    const toastIsError = ref(false);
+    const showToast = (message, error = false) => {
+        toastMessage.value = message;
+        toastIsError.value = error;
+        toastVisible.value = true;
+  
+        setTimeout(() => {
+            toastVisible.value = false;
+        }, 3000);
+    };
     
     // Delete link and show modal
     const confirmDelete = (id: number) => {
