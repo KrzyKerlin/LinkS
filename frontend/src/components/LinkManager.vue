@@ -102,18 +102,19 @@
                     @dragenter="dragEnter"
                     @drop="dragDrop($event, link.id)"
                     @dragend="dragEnd">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute top-0 left-2 cursor-move text-indigo-500 mb-2 h-5 w-5">
+                            <path d="M5 14H19M5 10H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
                         <span :class="{'bg-purple-600': link.category === 'WATCH', 'bg-green-600': link.category === 'READ' }" 
                         class="absolute -top-2 -right-2 text-white px-3 py-1 rounded-md text-xs uppercase font-medium shadow-md transform rotate-2">
                         {{ link.category }}
                         </span>
-                        <div class="flex items-start mt-2 mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        <div class="flex items-start align-center my-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>
-                            <h3 class="text-lg font-bold text-indigo-800 line-clamp-2 pr-2">{{ link.title }}</h3>
+                            <h3 class="text-lg font-bold text-indigo-500 line-clamp-2 mt-2 pr-2">{{ link.title }}</h3>
                         </div>
-                        <a :href="link.url" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline truncate flex items-center mb-4 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
+                        <a :href="link.url" target="_blank" class="text-md text-indigo-500 hover:font-bold truncate flex items-center justify-center mb-4">
                             <span class="truncate">{{ link.url }}</span>
                         </a>
                         <div class="link-actions mt-auto flex justify-center gap-4">
@@ -149,7 +150,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <h3 class="font-bold text-lg text-white">Confirm Deletion</h3>
+                        <h3 class="font-bold text-lg text-white">Confirm Delete</h3>
                     </div>
                 </div>
                 <div class="modal-content px-6 py-8 text-center">
@@ -280,6 +281,25 @@
     const dragEnter = (event) => {
         event.preventDefault();
     };
+    const dragDrop = (event, targetLinkId) => {
+        event.preventDefault();
+        if (draggedItem.value !== targetLinkId) {
+            // Find indexes of links
+            const draggedIndex = links.value.findIndex(link => link.id === draggedItem.value);
+            const targetIndex = links.value.findIndex(link => link.id === targetLinkId);
+        
+            if (draggedIndex !== -1 && targetIndex !== -1) {
+                // Move link
+                const [draggedLink] = links.value.splice(draggedIndex, 1);
+                links.value.splice(targetIndex, 0, draggedLink);
+                links.value.forEach((link, index) => {
+                    link.order = index + 1;
+                });
+            }
+        }
+        isDragging.value = false;
+    };
+
     const dragEnd = () => {
         draggedItem.value = null;
         isDragging.value = false;
