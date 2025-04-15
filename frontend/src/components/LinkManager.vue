@@ -94,7 +94,14 @@
                 <!-- Links List-->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                     <div v-for="link in filteredLinks" :key="link.id" 
-                    class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex flex-col hover:bg-white/90 transition-all duration-300 border border-gray-100 h-full relative">
+                    class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex flex-col hover:bg-white/90 transition-all duration-300 border border-gray-100 h-full relative"
+                    :class="{'opacity-50': isDragging && draggedItem === link.id}"
+                    draggable="true"
+                    @dragstart="dragStart($event, link.id)"
+                    @dragover="dragOver"
+                    @dragenter="dragEnter"
+                    @drop="dragDrop($event, link.id)"
+                    @dragend="dragEnd">
                         <span :class="{'bg-purple-600': link.category === 'WATCH', 'bg-green-600': link.category === 'READ' }" 
                         class="absolute -top-2 -right-2 text-white px-3 py-1 rounded-md text-xs uppercase font-medium shadow-md transform rotate-2">
                         {{ link.category }}
@@ -258,8 +265,28 @@
         localStorage.setItem('activeFilter', filter);
     }
 
-        // Function to switch favorite link
-        const toggleFavorite = (id: number) => {
+    // Drag and drop links
+    const draggedItem = ref(null);
+    const isDragging = ref(false);
+    const dragStart = (event, linkId) => {
+        draggedItem.value = linkId;
+        isDragging.value = true;
+        event.dataTransfer.effectAllowed = 'move';
+    };
+    const dragOver = (event) => {
+        event.preventDefault();
+    };
+
+    const dragEnter = (event) => {
+        event.preventDefault();
+    };
+    const dragEnd = () => {
+        draggedItem.value = null;
+        isDragging.value = false;
+    };
+
+    // Function to switch favorite link
+    const toggleFavorite = (id: number) => {
         const linkIndex = links.value.findIndex(link => link.id === id);
         if (linkIndex !== -1) {
             const updatedLink = { ...links.value[linkIndex] };
