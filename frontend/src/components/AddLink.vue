@@ -1,26 +1,34 @@
 <template>
     <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity z-50">
-        <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-500 border-indigo-500 bg-opacity-10" @click="closeModal"></div>
+        <div class="absolute transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg" @click="closeModal"></div>
       
         <!-- Modal -->
         <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6 md:p-8 z-10 relative">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-semibold text-indigo-700">Add New Link</h2>
-                <button @click="closeModal" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <button @click="closeModal" class="text-gray-500 hover:text-indigo-700 focus:outline-none cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
   
             <form @submit.prevent="submitForm" class="space-y-6">
-                <div>
-                    <label for="title" class="block text-sm font-medium text-indigo-600 mb-2">Title</label>
-                    <input id="title" v-model="linkData.title" placeholder="Enter title..." required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                <div class="relative">
+                    <input type="text" id="title" v-model="linkData.title" 
+                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
+                    placeholder=" " required />
+                    <label for="title" class="absolute text-sm text-indigo-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
+                    Title
+                    </label>
                 </div>
-                <div>
-                    <label for="url" class="block text-sm font-medium text-indigo-600 mb-2">URL</label>
-                    <input id="url" v-model="linkData.url" placeholder="Enter URL..." required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
-                </div>  
+                <div class="relative">
+                    <input type="text" id="url" v-model="linkData.url" 
+                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
+                    placeholder=" " required />
+                    <label for="url" class="absolute text-sm text-indigo-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
+                    URL Link
+                    </label>
+                </div>
                 <!-- Category options -->
                 <div>
                     <label class="block text-sm font-medium text-indigo-600 mb-2">Category</label>
