@@ -12,8 +12,8 @@
                     </div>
                 <!-- Filter By Category -->
                 <div class="mt-8">
-                    <h2 class="text-xl font-bold text-indigo-800 mb-4">Filter by Category</h2>
-                    <div class="flex justify-center gap-4 mb-10">
+                    <h2 class="text-xl text-center font-bold text-indigo-800 mb-4">Filter by Category</h2>
+                    <div class="flex justify-center gap-4">
                         <button @click="setFilter('all')" class="relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md cursor-pointer"
                         :class="activeFilter === 'all' ? 'bg-indigo-500 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="All links">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -44,57 +44,55 @@
                         </button>   
                     </div>
                 </div>
-
-                <!-- Links List-->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                    <div v-for="link in filteredLinks" :key="link.id" 
-                    class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-4 flex flex-col hover:bg-white/90 transition-all duration-300 border border-gray-100 h-full relative"
-                    :class="{'opacity-50': isDragging && draggedItem === link.id}"
-                    draggable="true"
-                    @dragstart="dragStart($event, link.id)"
-                    @dragover="dragOver"
-                    @dragenter="dragEnter"
-                    @drop="dragDrop($event, link.id)"
-                    @dragend="dragEnd">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute top-0 left-2 cursor-move text-indigo-500 mb-2 h-5 w-5">
-                            <path d="M5 14H19M5 10H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </div>            
+        </div>
+        <!-- Links List-->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8 mx-auto lg:max-w-full px-12 lg:px-20">
+            <div v-for="link in filteredLinks" :key="link.id" 
+            class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-6 flex flex-col hover:bg-white/90 transition-all duration-300 border border-gray-100 h-full relative"
+            :class="{'opacity-50': isDragging && draggedItem === link.id}"
+            draggable="true"
+            @dragstart="dragStart($event, link.id)"
+            @dragover="dragOver"
+            @dragenter="dragEnter"
+            @drop="dragDrop($event, link.id)"
+            @dragend="dragEnd">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute top-0 left-2 cursor-move text-indigo-500 mb-2 h-5 w-5"> <path d="M5 14H19M5 10H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span :class="{'bg-purple-600': link.category === 'WATCH', 'bg-green-600': link.category === 'READ' }" 
+                class="absolute -top-2 -right-2 text-white px-3 py-1 rounded-md text-xs uppercase font-medium shadow-md transform rotate-2">
+                {{ link.category }}
+                </span>
+                <div class="flex items-start align-center my-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    <h3 class="text-lg font-bold text-indigo-500 line-clamp-2">{{ link.title }}</h3>
+                </div>
+                <a :href="link.url" target="_blank" class="text-md text-indigo-500 hover:font-bold truncate flex items-center justify-center mb-4">
+                    <span class="truncate">{{ link.url }}</span>
+                </a>
+                <div class="link-actions mt-auto flex justify-center gap-4 mt-4">
+                    <button @click="toggleFavorite(link.id)" class="p-2 rounded-full bg-gray-100 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Toggle favorite">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-500 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
-                        <span :class="{'bg-purple-600': link.category === 'WATCH', 'bg-green-600': link.category === 'READ' }" 
-                        class="absolute -top-2 -right-2 text-white px-3 py-1 rounded-md text-xs uppercase font-medium shadow-md transform rotate-2">
-                        {{ link.category }}
-                        </span>
-                        <div class="flex items-start align-center my-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                            </svg>
-                            <h3 class="text-lg font-bold text-indigo-500 line-clamp-2 mt-2 pr-2">{{ link.title }}</h3>
-                        </div>
-                        <a :href="link.url" target="_blank" class="text-md text-indigo-500 hover:font-bold truncate flex items-center justify-center mb-4">
-                            <span class="truncate">{{ link.url }}</span>
-                        </a>
-                        <div class="link-actions mt-auto flex justify-center gap-4">
-                            <button @click="toggleFavorite(link.id)" class="p-2 rounded-full bg-gray-100 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Toggle favorite">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-500 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                </svg>
-                            </button>
-                            <button @click="shareLink(link)" class="p-2 rounded-full hover:bg-gray-100 transition-colors text-blue-500 cursor-pointer" aria-label="Share link">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="18" cy="5" r="3"></circle>
-                                    <circle cx="6" cy="12" r="3"></circle>
-                                    <circle cx="18" cy="19" r="3"></circle>
-                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                                </svg> 
-                            </button>
-                            <button @click="confirmDelete(link.id)" class="p-2 rounded-full bg-gray-100 hover:bg-red-500 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Delete link">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- URL Message for share link -->
-                    <Toast :message="toastMessage" :visible="toastVisible" :is-error="toastIsError" />
+                    </button>
+                    <button @click="shareLink(link)" class="p-2 rounded-full hover:bg-gray-100 transition-colors text-blue-500 cursor-pointer" aria-label="Share link">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="5" r="3"></circle>
+                            <circle cx="6" cy="12" r="3"></circle>
+                            <circle cx="18" cy="19" r="3"></circle>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                        </svg> 
+                    </button>
+                    <button @click="confirmDelete(link.id)" class="p-2 rounded-full bg-gray-100 hover:bg-red-500 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Delete link">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
                 </div>
             </div>
+            <!-- URL Message for share link -->
+            <Toast :message="toastMessage" :visible="toastVisible" :is-error="toastIsError" />
         </div>
         <!-- Delete Confirmation Modal -->       
         <div v-if="showConfirmModal" class="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity z-50" aria-hidden="true" @click="cancelDelete">
