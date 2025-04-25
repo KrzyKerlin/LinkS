@@ -3,10 +3,10 @@
         <div class="container mx-auto max-w-4xl px-4">
             <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6">
                 <h1 class="text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-indigo-900 to-purple-400 bg-clip-text text-transparent leading-tight">
-                My LinkS
+                My <span class="animate-bounce inline-block bg-gradient-to-r from-indigo-900 to-purple-400 bg-clip-text text-transparent">L</span>inkS
                 </h1>
                     <div class="flex justify-center">
-                        <button @click="openAddLinkModal" class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-gradient-to-br from-purple-500 to-blue-500 transition-colors flex items-center space-x-2 cursor-pointer">
+                        <button @click="openAddLinkModal" class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-gradient-to-br from-purple-500 to-blue-500 transition-colors flex items-center space-x-2 cursor-pointer animate-bounce">
                             <span>+</span> <span>Add Link</span>
                         </button>
                     </div>
@@ -71,7 +71,7 @@
                 <a :href="link.url" target="_blank" class="text-md text-indigo-500 hover:font-bold truncate flex items-center justify-center mb-4">
                     <span class="truncate">{{ link.url }}</span>
                 </a>
-                <div class="link-actions mt-auto flex justify-center gap-4 mt-4">
+                <div class="link-actions flex justify-center gap-4 mt-4">
                     <button @click="toggleFavorite(link.id)" class="p-2 rounded-full bg-gray-100 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Toggle favorite">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-500 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
