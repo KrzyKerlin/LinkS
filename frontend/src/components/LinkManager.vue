@@ -76,13 +76,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-500 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
                     </button>
-                    <button @click="shareLink(link)" class="p-2 rounded-full hover:bg-gray-100 transition-colors text-blue-500 cursor-pointer" aria-label="Share link">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="18" cy="5" r="3"></circle>
-                            <circle cx="6" cy="12" r="3"></circle>
-                            <circle cx="18" cy="19" r="3"></circle>
-                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    <button @click="copyLink(link)" class="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-indigo-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Copy link to clipboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                         </svg> 
                     </button>
                     <button @click="confirmDelete(link.id)" class="p-2 rounded-full bg-gray-100 hover:bg-red-500 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Delete link">
@@ -270,33 +265,20 @@
         }
     };
 
-    // Share link with URL validation
-    function shareLink(link) {
+    // Copy link to clipboard with URL validation
+    function copyLink(link) {
         if (!isValidURL(link.url)) {
-            showToast('Invalid URL');
+             showToast('Invalid URL', true);
             return;
-        }
-        if (navigator.share) {
-            navigator.share({
-            title: link.title,
-            url: link.url
-            })
-        .then(function() {
-            console.log('Link udostępniony!');
-        })
-        .catch(function(error) {
-            console.error('Błąd udostępniania:', error);
-        });
-        } else {
-        // copy to clipboard
+         }
         navigator.clipboard.writeText(link.url)
-            .then(function() {
-                showToast('Link copy to clipboard!');
-            })
-            .catch(function(err) {
-                console.error('Nie można skopiować:', err);
-            });
-        }
+        .then(() => {
+             showToast('Link copied to clipboard!');
+        })
+         .catch((err) => {
+             console.error('Could not copy link:', err);
+            showToast('Failed to copy link', true);         
+        });
     }
 
     const toastVisible = ref(false);
