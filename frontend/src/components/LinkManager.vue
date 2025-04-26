@@ -76,8 +76,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-500 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
                     </button>
-                    <button @click="copyLink(link)" class="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-indigo-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Copy link to clipboard">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    <button @click="copyLink(link)" class="p-2 rounded-full bg-gray-100 hover:bg-indigo-500 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Copy link to clipboard">
+                        <svg v-if="!copiedLink" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg> 
                     </button>
                     <button @click="confirmDelete(link.id)" class="p-2 rounded-full bg-gray-100 hover:bg-red-500 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Delete link">
@@ -86,7 +88,7 @@
                     </button>
                 </div>
             </div>
-            <!-- URL Message for share link -->
+            <!-- URL Message for copy link -->
             <Toast :message="toastMessage" :visible="toastVisible" :is-error="toastIsError" />
         </div>
         <!-- Delete Confirmation Modal -->       
@@ -138,11 +140,18 @@
         favorite?: boolean
     }
 
-    // Link array - will store all added links
+    // Reactive states
     const links = ref<Link[]>([]);
     const showAddLinkModal = ref(false);
     const showConfirmModal = ref(false);
+    const activeFilter = ref('all');
     const linkToDelete = ref<number | null>(null);
+    const copiedLink = ref(false);
+    const draggedItem = ref(null);
+    const isDragging = ref(false);
+    const toastVisible = ref(false);
+    const toastMessage = ref('');
+    const toastIsError = ref(false);
     
     // Loading links from localStorage when starting the app
     onMounted(() => {
@@ -188,7 +197,6 @@
     }, { deep: true });
 
     // Filtered links by category 
-    const activeFilter = ref('all')
     const filteredLinks = computed(() => {
         if (activeFilter.value === 'all') {
             return links.value
@@ -208,8 +216,6 @@
     }
 
     // Drag and drop links
-    const draggedItem = ref(null);
-    const isDragging = ref(false);
     const dragStart = (event, linkId) => {
         draggedItem.value = linkId;
         isDragging.value = true;
@@ -268,22 +274,68 @@
     // Copy link to clipboard with URL validation
     function copyLink(link) {
         if (!isValidURL(link.url)) {
-             showToast('Invalid URL', true);
+            showToast('Invalid URL', true);
             return;
-         }
-        navigator.clipboard.writeText(link.url)
-        .then(() => {
-             showToast('Link copied to clipboard!');
-        })
-         .catch((err) => {
-             console.error('Could not copy link:', err);
-            showToast('Failed to copy link', true);         
-        });
+        }
+    
+        // Try using Clipboard API first (modern browsers)
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(link.url)
+                .then(() => {
+                    showToast('Link copied to clipboard!');
+                })
+                .catch((err) => {
+                    // If Clipboard API fails, try fallback method
+                    fallbackCopyToClipboard(link.url);
+                });
+        } else {
+            // Fallback for browsers without Clipboard API
+            fallbackCopyToClipboard(link.url);
+        }
     }
 
-    const toastVisible = ref(false);
-    const toastMessage = ref('');
-    const toastIsError = ref(false);
+    // Fallback method for copying to clipboard
+    function fallbackCopyToClipboard(text) {
+        // Create temporary input element
+        const tempInput = document.createElement('input');
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+    
+        // Select and copy on mobile
+        tempInput.style.position = 'fixed';
+        tempInput.style.opacity = '0';
+        tempInput.style.top = '0';
+        tempInput.style.left = '0';
+        tempInput.focus();
+        tempInput.select();
+    
+        let successful = false;
+        try {
+            // Execute copy command
+            successful = document.execCommand('copy');
+            if (successful) {
+                showToast('Link copied to clipboard!');
+                copiedLink.value = true;
+                setTimeout(() => {
+                    copiedLink.value = false;
+                }, 2000);
+            } else {
+                showToast('Could not copy link. Please copy manually.', true);
+                tempInput.style.opacity = '1';
+                tempInput.style.zIndex = '999999';
+                setTimeout(() => {
+                    tempInput.style.opacity = '0';
+                    document.body.removeChild(tempInput);
+                }, 3000);
+            }
+        } catch (err) {
+            console.error('Error copying text: ', err);
+            showToast('Failed to copy link', true);
+        }
+    // Clean up
+    document.body.removeChild(tempInput);
+    }
+
     const showToast = (message, error = false) => {
         toastMessage.value = message;
         toastIsError.value = error;
