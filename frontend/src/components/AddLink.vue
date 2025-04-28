@@ -1,11 +1,23 @@
 <template>
-    <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity z-50">
-        <div class="absolute transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg" @click="closeModal"></div>
+    <Transition 
+      name="modal-animation"
+      enter-active-class="duration-300 ease-out"
+      enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100"
+      leave-active-class="duration-200 ease-in"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="opacity-0 scale-95"
+    >
+      <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
+        <!-- Modal backdrop with fade animation -->
+        <div class="absolute inset-0 bg-indigo-500/75 backdrop-blur-sm transition-opacity"></div>
       
         <!-- Modal -->
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6 md:p-8 z-10 relative">
+        <div class="bg-white rounded-xl shadow-md w-full max-w-md mx-4 p-6 md:p-8 z-10 relative"
+          @click.stop
+        >
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-semibold text-indigo-700">Add New Link</h2>
+                <h2 class="text-xl font-semibold text-indigo-700 animate-bounce">Add New Link</h2>
                 <button @click="closeModal" class="text-gray-500 hover:text-indigo-700 focus:outline-none cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -63,7 +75,8 @@
                 </div>
             </form>
         </div>
-    </div>
+      </div>
+    </Transition>
 </template>
   
 <script setup lang="ts">
