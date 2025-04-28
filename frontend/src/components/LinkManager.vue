@@ -89,7 +89,7 @@
                 </div>
             </div>
             <!-- URL Message for copy link -->
-            <Toast :message="toastMessage" :visible="toastVisible" :is-error="toastIsError" />
+            <Toast :message="toast.message" :visible="toast.visible" :is-error="toast.isError" />
         </div>
         <!-- Delete Confirmation Modal -->       
         <div v-if="showConfirmModal" class="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity z-50" aria-hidden="true" @click="cancelDelete">
@@ -127,9 +127,9 @@
 </template>
   
 <script setup lang="ts">
-    import { ref, computed, onMounted, watch } from 'vue';
+    import { ref, computed, onMounted, watch, reactive } from 'vue';
     import AddLinkModal from './AddLink.vue';
-    import Toast from './ToastMessageUrl.vue';
+    import Toast from './ToastMessageUrlLink.vue';
   
     interface Link {
         id: number
@@ -140,7 +140,7 @@
         favorite?: boolean
     }
 
-    // Reactive states
+    // Ref variables
     const links = ref<Link[]>([]);
     const showAddLinkModal = ref(false);
     const showConfirmModal = ref(false);
@@ -149,9 +149,12 @@
     const copiedLink = ref(false);
     const draggedItem = ref(null);
     const isDragging = ref(false);
-    const toastVisible = ref(false);
-    const toastMessage = ref('');
-    const toastIsError = ref(false);
+    // Toast notifications
+    const toast = reactive({
+        visible: false,
+        message: '',
+        isError: false
+    }); 
     
     // Loading links from localStorage when starting the app
     onMounted(() => {
@@ -272,7 +275,7 @@
     };
 
     // Copy link to clipboard with URL validation
-    function copyLink(link) {
+    function copyLink(link: Link) {
         if (!isValidURL(link.url)) {
             showToast('Invalid URL', true);
             return;
@@ -281,45 +284,32 @@
         // Try using Clipboard API first (modern browsers)
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(link.url)
-                .then(() => {
-                    showToast('Link copied to clipboard!');
-                })
-                .catch((err) => {
-                    // If Clipboard API fails, try fallback method
-                    fallbackCopyToClipboard(link.url);
-                });
-        } else {
-            // Fallback for browsers without Clipboard API
-            fallbackCopyToClipboard(link.url);
+                .then(() => showToast('Link copied to clipboard!'))
+                .catch(() => fallbackCopyToClipboard(link.url));
+            return;
         }
+    
+        // Fallback for older browsers
+        fallbackCopyToClipboard(link.url);
     }
 
     // Fallback method for copying to clipboard
-    function fallbackCopyToClipboard(text) {
-        // Create temporary input element
+    function fallbackCopyToClipboard(text: string) {
         const tempInput = document.createElement('input');
         tempInput.value = text;
+        tempInput.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
         document.body.appendChild(tempInput);
     
-        // Select and copy on mobile
-        tempInput.style.position = 'fixed';
-        tempInput.style.opacity = '0';
-        tempInput.style.top = '0';
-        tempInput.style.left = '0';
-        tempInput.focus();
-        tempInput.select();
-    
-        let successful = false;
         try {
-            // Execute copy command
-            successful = document.execCommand('copy');
+            tempInput.focus();
+            tempInput.select();
+            const successful = document.execCommand('copy');       
             if (successful) {
                 showToast('Link copied to clipboard!');
                 copiedLink.value = true;
-                setTimeout(() => {
-                    copiedLink.value = false;
-                }, 2000);
+                setTimeout(() => { copiedLink.value = false; }, 2000);
             } else {
+                // Show manual copy UI if automatic copy fails
                 showToast('Could not copy link. Please copy manually.', true);
                 tempInput.style.opacity = '1';
                 tempInput.style.zIndex = '999999';
@@ -329,20 +319,21 @@
                 }, 3000);
             }
         } catch (err) {
-            console.error('Error copying text: ', err);
+            console.error('Error copying text:', err);
             showToast('Failed to copy link', true);
+        } finally {
+            // Ensure cleanup happens even if there's an error
+            document.body.removeChild(tempInput);
         }
-    // Clean up
-    document.body.removeChild(tempInput);
     }
 
     const showToast = (message, error = false) => {
-        toastMessage.value = message;
-        toastIsError.value = error;
-        toastVisible.value = true;
+        toast.message = message;
+        toast.isError = error;
+        toast.visible = true;
   
         setTimeout(() => {
-            toastVisible.value = false;
+            toast.visible = false;
         }, 3000);
     };
     
@@ -359,7 +350,6 @@
 
     const deleteLink = () => {
       if (linkToDelete.value === null) return;
-      
       links.value = links.value.filter(link => link.id !== linkToDelete.value);
       showConfirmModal.value = false;
       linkToDelete.value = null;
