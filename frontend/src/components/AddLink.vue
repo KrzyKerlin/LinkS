@@ -36,7 +36,7 @@
                 <div class="relative">
                     <input type="text" id="url" v-model="linkData.url" 
                     class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
-                    placeholder=" " required />
+                    placeholder=" " required @blur="checkDuplicate" />
                     <label for="url" class="absolute text-sm text-indigo-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
                     URL Link
                     </label>
@@ -77,19 +77,28 @@
         </div>
       </div>
     </Transition>
+  
+    <!-- Toast component -->
+    <Toast :message="toastMessage" :visible="showToast" :is-error="isToastError" />
 </template>
   
 <script setup lang="ts">
 import { ref } from 'vue';
+import Toast from './ToastMessageUrlLink.vue';
   
 interface LinkData {
     title: string;
     url: string;
     category: 'WATCH' | 'READ';
 }
+     
+interface Link extends LinkData {
+    id?: string | number;
+}
   
 const props = defineProps<{
     isOpen: boolean;
+    existingLinks: Link[];
 }>();
   
 const emit = defineEmits(['close', 'addLink']);
@@ -100,8 +109,55 @@ const linkData = ref<LinkData>({
     category: 'WATCH'
 });
   
+// Toast state
+const showToast = ref(false);
+const toastMessage = ref('');
+const isToastError = ref(false);
+  
+// Function to display toast
+const displayToast = (message: string, isError: boolean = false) => {
+    toastMessage.value = message;
+    isToastError.value = isError;
+    showToast.value = true;
+    
+    // Auto-hide toast after 3 seconds
+    setTimeout(() => {
+      showToast.value = false;
+    }, 3000);
+};
+
 const closeModal = () => {
     emit('close');
+};
+  
+// Optimized function to check for duplicate URLs
+const checkDuplicate = () => {
+  if (!linkData.value.url || linkData.value.url.trim().length < 3) return false;
+  
+  // URL normalization in one step
+  let normalizedNewUrl = linkData.value.url.trim().toLowerCase();
+  if (!/^https?:\/\//i.test(normalizedNewUrl)) {
+    normalizedNewUrl = 'https://' + normalizedNewUrl;
+  }
+  normalizedNewUrl = normalizedNewUrl.replace(/\/+$/, '');
+  
+  // Check for duplicate
+  const existingLink = props.existingLinks.find(link => {
+    let normalizedExisting = link.url.trim().toLowerCase();
+    if (!/^https?:\/\//i.test(normalizedExisting)) {
+      normalizedExisting = 'https://' + normalizedExisting;
+    }
+    normalizedExisting = normalizedExisting.replace(/\/+$/, '');
+    
+    return normalizedExisting === normalizedNewUrl;
+  });
+  
+  if (existingLink) {
+    displayToast(`This link already exists in "${existingLink.category}"!`, true);
+    return true;
+  }
+  
+  return false;
 };
   
 const submitForm = () => {

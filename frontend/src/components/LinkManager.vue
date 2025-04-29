@@ -122,7 +122,7 @@
             </div>
         </div>
         <!-- Add Link Modal -->
-        <AddLinkModal :isOpen="showAddLinkModal" @close="closeAddLinkModal" @addLink="addLink" />
+        <AddLinkModal :isOpen="showAddLinkModal" :existingLinks="links" @close="closeAddLinkModal" @addLink="addLink" />
     </div>
 </template>
   
