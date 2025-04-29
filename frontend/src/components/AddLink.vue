@@ -114,13 +114,10 @@ const showToast = ref(false);
 const toastMessage = ref('');
 const isToastError = ref(false);
   
-// Function to display toast
 const displayToast = (message: string, isError: boolean = false) => {
     toastMessage.value = message;
     isToastError.value = isError;
     showToast.value = true;
-    
-    // Auto-hide toast after 3 seconds
     setTimeout(() => {
       showToast.value = false;
     }, 3000);
@@ -130,7 +127,7 @@ const closeModal = () => {
     emit('close');
 };
   
-// Optimized function to check for duplicate URLs
+// Check for duplicate URLs
 const checkDuplicate = () => {
   if (!linkData.value.url || linkData.value.url.trim().length < 3) return false;
   
@@ -163,6 +160,9 @@ const checkDuplicate = () => {
 const submitForm = () => {
     // Prevent adding empty links
     if (!linkData.value.title.trim() || !linkData.value.url.trim()) return;
+  
+    // Check for duplicates
+    if (checkDuplicate()) return;
   
     // Emit event with link data to parent component
     emit('addLink', { ...linkData.value });
