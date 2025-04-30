@@ -41,6 +41,16 @@
                     URL Link
                     </label>
                 </div>
+                <!-- Tags -->
+                <div class="relative">
+                    <input type="text" id="tags" v-model="tagsInput" 
+                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
+                    placeholder=" " />
+                    <label for="tags" class="absolute text-sm text-indigo-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
+                    Tags (space separated with #)
+                    </label>
+                </div>
+
                 <!-- Category options -->
                 <div>
                     <label class="block text-sm font-medium text-indigo-600 mb-2">Category</label>
@@ -90,10 +100,13 @@ interface LinkData {
     title: string;
     url: string;
     category: 'WATCH' | 'READ';
+    tags?: string[];
 }
      
 interface Link extends LinkData {
     id?: string | number;
+    favorite?: boolean;
+    order?: number;
 }
   
 const props = defineProps<{
@@ -106,8 +119,15 @@ const emit = defineEmits(['close', 'addLink']);
 const linkData = ref<LinkData>({
     title: '',
     url: '',
-    category: 'WATCH'
-});
+    category: 'WATCH',
+    tags: []
+  });
+  
+// Tags input state
+const tagsInput = ref('');
+  
+// Computed property to display tags as they're typed
+
   
 // Toast state
 const showToast = ref(false);
@@ -147,7 +167,7 @@ const checkDuplicate = () => {
     normalizedExisting = normalizedExisting.replace(/\/+$/, '');
     
     return normalizedExisting === normalizedNewUrl;
-  });
+});
   
   if (existingLink) {
     displayToast(`This link already exists in "${existingLink.category}"!`, true);
@@ -164,15 +184,26 @@ const submitForm = () => {
     // Check for duplicates
     if (checkDuplicate()) return;
   
+   // Process tags before submitting
+    const processedTags = tagsInput.value
+      .split(' ')
+      .filter(tag => tag.trim() !== '')
+      .map(tag => tag.startsWith('#') ? tag : `#${tag}`);
+  
     // Emit event with link data to parent component
-    emit('addLink', { ...linkData.value });
+    emit('addLink', { 
+      ...linkData.value,
+      tags: processedTags.length > 0 ? processedTags : undefined
+    });
     
     // Reset form
     linkData.value = {
       title: '',
       url: '',
-      category: 'WATCH'
+      category: 'WATCH',
+      tags: []
     };
+    tagsInput.value = '';
     
     // Close modal
     closeModal();
