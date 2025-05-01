@@ -50,6 +50,12 @@
                     Tags (space separated with #)
                     </label>
                 </div>
+                <!-- Preview tags -->
+                <div v-if="displayTags.length > 0" class="flex flex-wrap gap-2">
+                    <span v-for="(tag, index) in displayTags" :key="index" class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-md">
+                    {{ tag }}
+                    </span>
+                </div>
 
                 <!-- Category options -->
                 <div>
@@ -89,11 +95,11 @@
     </Transition>
   
     <!-- Toast component -->
-    <Toast :message="toastMessage" :visible="showToast" :is-error="isToastError" />
+    <Toast :message="toast.message" :visible="toast.show" :is-error="toast.isToastError" />
 </template>
   
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import Toast from './ToastMessageUrlLink.vue';
   
 interface LinkData {
@@ -121,25 +127,22 @@ const linkData = ref<LinkData>({
     url: '',
     category: 'WATCH',
     tags: []
-  });
+});
   
-// Tags input state
-const tagsInput = ref('');
-  
-// Computed property to display tags as they're typed
-
-  
+const tagsInput = ref('');  
 // Toast state
-const showToast = ref(false);
-const toastMessage = ref('');
-const isToastError = ref(false);
+const toast = reactive({
+    show: false,
+    message: '',
+    isToastError: false
+})
   
 const displayToast = (message: string, isError: boolean = false) => {
-    toastMessage.value = message;
-    isToastError.value = isError;
-    showToast.value = true;
+    toast.message = message;
+    toast.isToastError = isError;
+    toast.show = true;
     setTimeout(() => {
-      showToast.value = false;
+        toast.show = false;
     }, 3000);
 };
 
@@ -176,6 +179,16 @@ const checkDuplicate = () => {
   
   return false;
 };
+
+// Display tags as they're typed
+const displayTags = computed(() => {
+  if (!tagsInput.value) return [];
+  
+  // Split by space and filter out empty strings
+  return tagsInput.value.split(' ')
+    .filter(tag => tag.trim() !== '')
+    .map(tag => tag.startsWith('#') ? tag : `#${tag}`);
+});
   
 const submitForm = () => {
     // Prevent adding empty links
