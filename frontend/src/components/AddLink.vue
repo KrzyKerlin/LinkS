@@ -10,15 +10,15 @@
     >
       <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center z-50">
         <!-- Modal backdrop with fade animation -->
-        <div class="absolute inset-0 bg-indigo-500/75 backdrop-blur-sm transition-opacity"></div>
+        <div class="absolute inset-0 bg-sky-400/75 backdrop-blur-sm transition-opacity"></div>
       
         <!-- Modal -->
         <div class="bg-white rounded-xl shadow-md w-full max-w-md mx-4 p-6 md:p-8 z-10 relative"
           @click.stop
         >
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-semibold text-indigo-700 animate-bounce">Add New Link</h2>
-                <button @click="closeModal" class="text-gray-500 hover:text-indigo-700 focus:outline-none cursor-pointer">
+                <h2 class="text-xl font-semibold text-sky-600 animate-bounce">Add New Link</h2>
+                <button @click="closeModal" class="text-gray-500 hover:text-sky-600 focus:outline-none cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
@@ -27,44 +27,44 @@
             <form @submit.prevent="submitForm" class="space-y-6">
                 <div class="relative">
                     <input type="text" id="title" v-model="linkData.title" 
-                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
+                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-sky-600 peer" 
                     placeholder=" " required />
-                    <label for="title" class="absolute text-sm text-indigo-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
+                    <label for="title" class="absolute text-sm text-sky-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
                     Title
                     </label>
                 </div>
                 <div class="relative">
                     <input type="text" id="url" v-model="linkData.url" 
-                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
+                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-sky-600 peer" 
                     placeholder=" " required @blur="checkDuplicate" />
-                    <label for="url" class="absolute text-sm text-indigo-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
+                    <label for="url" class="absolute text-sm text-sky-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
                     URL Link
                     </label>
                 </div>
                 <!-- Tags -->
                 <div class="relative">
                     <input type="text" id="tags" v-model="tagsInput" 
-                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer" 
+                    class="block px-2.5 pb-1.5 pt-3 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-sky-600 peer" 
                     placeholder=" " />
-                    <label for="tags" class="absolute text-sm text-indigo-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
+                    <label for="tags" class="absolute text-sm text-sky-600 duration-300 transform -translate-y-3 scale-75 top-1 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-indigo-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-1 peer-focus:scale-75 peer-focus:-translate-y-3 start-1">
                     Tags (space separated with #)
                     </label>
                 </div>
                 <!-- Preview tags -->
                 <div v-if="displayTags.length > 0" class="flex flex-wrap gap-2">
-                    <span v-for="(tag, index) in displayTags" :key="index" class="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-md">
+                    <span v-for="(tag, index) in displayTags" :key="index" class="px-2 py-1 bg-indigo-100 text-sky-600 text-xs rounded-md">
                     {{ tag }}
                     </span>
                 </div>
 
                 <!-- Category options -->
                 <div>
-                    <label class="block text-sm font-medium text-indigo-600 mb-2">Category</label>
+                    <label class="block text-sm font-medium text-sky-600 mb-2">Category</label>
                     <div class="flex space-x-4 justify-center">
                         <!-- WATCH option -->
                         <label class="relative flex-1 cursor-pointer max-w-xs">
                             <input type="radio" name="category" value="WATCH" v-model="linkData.category" class="absolute opacity-0 w-0 h-0" />
-                            <div :class="linkData.category === 'WATCH' ? 'bg-gradient-to-br from-purple-500 to-blue-500 border-indigo-500 text-white' : 'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
+                            <div :class="linkData.category === 'WATCH' ? 'bg-gradient-to-br from-sky-400 to-emerald-400 border-r-sky-400 text-white' : 'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
                             class="flex flex-col items-center justify-center py-2 px-2 border-2 rounded-lg transition-all duration-200">
                                 <span class="text-xl mb-1">▶</span>
                                 <span class="font-medium text-sm">WATCH</span>
@@ -73,7 +73,7 @@
                         <!-- READ option -->
                         <label class="relative flex-1 cursor-pointer max-w-xs">
                             <input type="radio" name="category" value="READ" v-model="linkData.category" class="absolute opacity-0 w-0 h-0" />
-                            <div :class="linkData.category === 'READ' ? 'bg-gradient-to-br from-purple-500 to-blue-500 border-indigo-500 text-white' : 'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
+                            <div :class="linkData.category === 'READ' ? 'bg-gradient-to-br from-sky-400 to-emerald-400 border-sky-400 text-white' : 'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
                             class="flex flex-col items-center justify-center py-2 px-2 border-2 rounded-lg transition-all duration-200">
                                 <span class="text-xl mb-1">📄</span>
                                 <span class="font-medium text-sm">READ</span>
@@ -84,7 +84,7 @@
       
                 <!-- Submit button -->
                 <div class="flex justify-center mt-8">
-                    <button type="submit" class="px-8 py-3 bg-indigo-500 text-white rounded-lg hover:bg-gradient-to-br from-purple-500 to-blue-500 transition-colors flex items-center space-x-2 group cursor-pointer">
+                    <button type="submit" class="px-8 py-3 bg-gradient-to-r from-sky-600 to-emerald-600 text-white rounded-lg hover:bg-sky-600 transition-colors flex items-center space-x-2 group cursor-pointer">
                         <span class="group-hover:text-white">+</span>
                         <span class="group-hover:text-white">Add Link</span>
                     </button>

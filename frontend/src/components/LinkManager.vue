@@ -1,21 +1,21 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-purple-500 to-blue-500 py-10">
+    <div class="min-h-screen bg-gradient-to-br from-sky-400 to-emerald-400 py-10">
         <div class="container mx-auto max-w-4xl px-4">
             <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-6">
-                <h1 class="text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-indigo-900 to-purple-400 bg-clip-text text-transparent leading-tight">
-                My <span class="animate-bounce inline-block bg-gradient-to-r from-indigo-900 to-purple-400 bg-clip-text text-transparent">L</span>inkS
+                <h1 class="text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-sky-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
+                My <span class="animate-bounce inline-block bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">L</span>inkS
                 </h1>
                     <div class="flex justify-center">
-                        <button @click="openAddLinkModal" class="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-gradient-to-br from-purple-500 to-blue-500 transition-colors flex items-center space-x-2 cursor-pointer animate-bounce">
+                        <button @click="openAddLinkModal" class="px-4 py-2 bg-gradient-to-r from-sky-600 to-emerald-600 text-white rounded-lg hover:bg-sky-600 transition-colors flex items-center space-x-2 cursor-pointer animate-bounce">
                             <span>+</span> <span>Add Link</span>
                         </button>
                     </div>
                 <!-- Filter By Category -->
                 <div class="mt-8">
-                    <h2 class="text-xl text-center font-bold text-indigo-800 mb-4">Filter by Category</h2>
+                    <h2 class="text-xl text-center font-bold text-sky-700 mb-4">Filter by Category</h2>
                     <div class="flex justify-center gap-4">
                         <button @click="setFilter('all')" class="relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md cursor-pointer"
-                        :class="activeFilter === 'all' ? 'bg-indigo-500 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="All links">
+                        :class="activeFilter === 'all' ? 'bg-sky-700 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="All links">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="2" y1="12" x2="22" y2="12"></line>
@@ -23,20 +23,20 @@
                             </svg>
                         </button>
                         <button @click="setFilter('favorites')" class="relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md cursor-pointer"
-                        :class="activeFilter === 'favorites' ? 'bg-yellow-500 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="Favorites links">
+                        :class="activeFilter === 'favorites' ? 'bg-yellow-300 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="Favorites links">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                             </svg>
                         </button>
                         <button @click="setFilter('watch')" class="relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md cursor-pointer"
-                        :class="activeFilter === 'watch' ? 'bg-purple-600 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="Links to watch">
+                        :class="activeFilter === 'watch' ? 'bg-sky-400 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="Links to watch">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="23 7 16 12 23 17 23 7"></polygon>
                                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
                             </svg>
                         </button>
                         <button @click="setFilter('read')" class="relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md cursor-pointer"
-                        :class="activeFilter === 'read' ? 'bg-green-600 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="Links to read">
+                        :class="activeFilter === 'read' ? 'bg-emerald-400 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="Links to read">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
@@ -57,33 +57,33 @@
             @dragenter="dragEnter"
             @drop="dragDrop($event, link.id)"
             @dragend="dragEnd">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute top-0 left-2 cursor-move text-indigo-500 mb-2 h-5 w-5"> <path d="M5 14H19M5 10H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute top-0 left-2 cursor-move text-sky-600 mb-2 h-5 w-5"> <path d="M5 14H19M5 10H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
-                <span :class="{'bg-purple-600': link.category === 'WATCH', 'bg-green-600': link.category === 'READ' }" 
+                <span :class="{'bg-sky-400': link.category === 'WATCH', 'bg-emerald-400': link.category === 'READ' }" 
                 class="absolute -top-2 -right-2 text-white px-3 py-1 rounded-md text-xs uppercase font-medium shadow-md transform rotate-2">
                 {{ link.category }}
                 </span>
                 <div class="flex items-start align-center my-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-sky-600 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                     </svg>
-                    <h3 class="text-lg font-bold text-indigo-500 line-clamp-2">{{ link.title }}</h3>
+                    <h3 class="text-lg font-bold text-sky-600 line-clamp-2">{{ link.title }}</h3>
                 </div>
-                <a :href="link.url" target="_blank" class="text-md text-indigo-500 hover:font-bold truncate flex items-center justify-center mb-4">
+                <a :href="link.url" target="_blank" class="text-md text-sky-600 hover:font-bold truncate flex items-center justify-center mb-4">
                     <span class="truncate">{{ link.url }}</span>
                 </a>
                 <!-- Tags -->
                 <div v-if="link.tags && link.tags.length > 0" class="flex flex-wrap gap-2 mt-2">
                     <span v-for="(tag, index) in link.tags" :key="index" 
-                    class="px-2 py-1 bg-indigo-100 text-indigo-600 text-xs rounded-md hover:bg-indigo-200 transition-colors">
+                    class="px-2 py-1 bg-gray-100 text-sky-600 text-xs rounded-md hover:bg-gray-200 transition-colors">
                     {{ tag }}
                     </span>
                 </div>
                 <div class="link-actions flex justify-center gap-4 mt-4">
                     <button @click="toggleFavorite(link.id)" class="p-2 rounded-full bg-gray-100 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Toggle favorite">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-500 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-300 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
                     </button>
-                    <button @click="copyLink(link)" class="p-2 rounded-full bg-gray-100 hover:bg-indigo-500 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Copy link to clipboard">
+                    <button @click="copyLink(link)" class="p-2 rounded-full bg-gray-100 hover:bg-sky-600 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Copy link to clipboard">
                         <svg v-if="!copiedLink" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                         </svg>
                         <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -101,7 +101,7 @@
         <!-- Delete Confirmation Modal -->       
         <div v-if="showConfirmModal" class="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity z-50" aria-hidden="true" @click="cancelDelete">
             <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg" @click.stop>
-                <div class="modal-header bg-indigo-500 px-6 py-4 flex items-center justify-center">
+                <div class="modal-header bg-sky-600 px-6 py-4 flex items-center justify-center">
                     <div class="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -111,7 +111,7 @@
                 </div>
                 <div class="modal-content px-6 py-8 text-center">
                     <p class="text-gray-700 mb-4">Are you sure you want to delete this link?</p>
-                    <p v-if="linkToDelete !== null" class="text-indigo-500 font-medium text-lg mt-2">
+                    <p v-if="linkToDelete !== null" class="text-sky-600 font-medium text-lg mt-2">
                     "{{ links.find(link => link.id === linkToDelete)?.title }}"
                     </p>
                 </div>
@@ -119,7 +119,7 @@
                     <button type="button" @click="cancelDelete" class="rounded-md border border-gray-300 bg-white px-5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 cursor-pointer">
                     Cancel
                     </button>
-                    <button type="button" @click="deleteLink" class="rounded-md bg-gray-200 px-5 py-2 text-sm font-medium text-indigo-500 shadow-sm hover:bg-red-600 hover:text-white transition-colors duration-200 flex items-center cursor-pointer">
+                    <button type="button" @click="deleteLink" class="rounded-md bg-gray-200 px-5 py-2 text-sm font-medium text-sky-600 shadow-sm hover:bg-red-600 hover:text-white transition-colors duration-200 flex items-center cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
