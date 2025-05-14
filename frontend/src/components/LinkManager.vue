@@ -161,6 +161,7 @@
     const copiedLink = ref(false);
     const draggedItem = ref(null);
     const isDragging = ref(false);
+    const searchTerm = ref('');
     // Toast notifications
     const toast = reactive({
         visible: false,
@@ -181,8 +182,9 @@
         }
     });
 
-    const handleSearch = (searchTerm) => {
-        console.log('Search:', searchTerm);
+    const handleSearch = (term) => {
+        console.log('Search:', term);
+        searchTerm.value = term;
     };
     
     // Open and close add link modal
