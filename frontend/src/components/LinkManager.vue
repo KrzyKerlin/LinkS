@@ -44,6 +44,9 @@
                         </button>   
                     </div>
                 </div>
+                <div class="mt-4 flex justify-end">
+                    <Search @search="handleSearch" />
+                </div>
             </div>            
         </div>
         <!-- Links List-->
@@ -137,6 +140,7 @@
     import { ref, computed, onMounted, watch, reactive } from 'vue';
     import AddLinkModal from './AddLink.vue';
     import Toast from './ToastMessageUrlLink.vue';
+    import Search from './Search.vue';
   
     interface Link {
         id: number
@@ -176,6 +180,10 @@
             activeFilter.value = savedFilter;
         }
     });
+
+    const handleSearch = (searchTerm) => {
+        console.log('Search:', searchTerm);
+    };
     
     // Open and close add link modal
     const openAddLinkModal = () => {
