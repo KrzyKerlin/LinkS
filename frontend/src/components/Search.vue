@@ -61,21 +61,19 @@ const toggleSearch = () => {
   }
 };
 
-const closeSearch = () => {
-  isSearchOpen.value = false;
+const clearSearch = () => {
   searchTerm.value = '';
+  emit('search', '');
 };
 
-const handleSearch = () => {
-  console.log('Search:', searchTerm.value);
-  emit('search', searchTerm.value);
+const closeSearch = () => {
+  isSearchOpen.value = false;
+  clearSearch(); 
 };
 
 const handleKeydown = (event) => {
   if (event.key === 'Escape') {
     closeSearch();
-  } else if (event.key === 'Enter') {
-    handleSearch();
   }
 };
 
@@ -85,13 +83,9 @@ const handleDocumentKeydown = (event) => {
   }
 };
 
-watch(isSearchOpen, (newValue) => {
-  if (newValue) {
-    document.addEventListener('keydown', handleDocumentKeydown);
-  } else {
-    document.removeEventListener('keydown', handleDocumentKeydown);
-  }
-});
+watch(searchTerm, (newValue) => {
+  emit('search', newValue);
+}, { immediate: true });
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleDocumentKeydown);
