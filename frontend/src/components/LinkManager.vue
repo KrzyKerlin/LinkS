@@ -183,7 +183,6 @@
     });
 
     const handleSearch = (term) => {
-        console.log('Search:', term);
         searchTerm.value = term;
     };
     
@@ -217,18 +216,31 @@
         localStorage.setItem('myLinks', JSON.stringify(newLinks));
     }, { deep: true });
 
-    // Filtered links by category 
+    // Filtered links 
     const filteredLinks = computed(() => {
-        if (activeFilter.value === 'all') {
-            return links.value
-        }
+        let result = links.value;
+        // Filter by category
         if (activeFilter.value === 'favorites') {
-            return links.value.filter(link => link.favorite === true);
-        }
-        return links.value.filter(link => 
+            result = result.filter(link => link.favorite === true);
+        } else if (activeFilter.value !== 'all') {
+            result = result.filter(link => 
             link.category === activeFilter.value.toUpperCase()
-        )
-    })
+            );
+        }
+  
+        // Filter by search phrase
+        if (searchTerm.value.trim()) {
+            const term = searchTerm.value.toLowerCase().trim();
+            result = result.filter(link => 
+                link.title.toLowerCase().includes(term) || 
+                link.url.toLowerCase().includes(term) || 
+                (link.tags && Array.isArray(link.tags) && 
+                link.tags.some(tag => tag.toLowerCase().includes(term)))
+            );
+        }
+  
+        return result;
+    });
 
     const setFilter = (filter) => {
         activeFilter.value = filter
