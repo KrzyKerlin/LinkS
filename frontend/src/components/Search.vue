@@ -1,12 +1,12 @@
 <template>
-  <div class="search-container relative z-10">
+  <div class="search-container relative z-10 h-10">
     <button 
       v-if="!isSearchOpen" 
       @click="toggleSearch" 
       class="search-icon-btn p-2 rounded-full bg-white/80 shadow-md hover:bg-white hover:shadow-lg transition-all duration-300 focus:outline-none"
-      aria-label="Otwórz wyszukiwarkę"
+      aria-label="Open"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
     </button>
@@ -21,7 +21,7 @@
     >
       <div 
         v-show="isSearchOpen" 
-        class="search-input-container absolute top-0 right-0 flex items-center overflow-hidden bg-white rounded-full border-2 border-sky-400 shadow-md origin-right w-56"
+        class="search-input-container absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center overflow-hidden bg-white rounded-full border-2 border-sky-600 shadow-md origin-center w-64 h-10"
       >
         <input 
           id="search-input"
@@ -33,7 +33,7 @@
         />
         <button 
           @click="closeSearch" 
-          class="p-2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
+          class="p-2 text-gray-400 hover:text-sky-600 focus:outline-none transition-colors"
           aria-label="Close"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

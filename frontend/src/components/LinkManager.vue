@@ -44,7 +44,7 @@
                         </button>   
                     </div>
                 </div>
-                <div class="mt-4 flex justify-end">
+                <div class="mt-4 flex justify-center">
                     <Search @search="handleSearch" />
                 </div>
             </div>            
