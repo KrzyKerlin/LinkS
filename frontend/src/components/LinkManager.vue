@@ -7,12 +7,11 @@
                 </h1>
                     <div class="flex justify-center">
                         <button @click="openAddLinkModal" class="px-4 py-2 bg-gradient-to-r from-sky-600 to-emerald-600 text-white rounded-lg hover:bg-sky-600 transition-colors flex items-center space-x-2 cursor-pointer animate-bounce">
-                            <span>+</span> <span>Add Link</span>
+                            <span>+</span> <h2 class="text-xl">Add Link</h2>
                         </button>
                     </div>
                 <!-- Filter By Category -->
-                <div class="mt-8">
-                    <h2 class="text-xl text-center font-bold text-sky-700 mb-4">Filter by Category</h2>
+                <div class="mt-8">   
                     <div class="flex justify-center gap-4">
                         <button @click="setFilter('all')" class="relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md cursor-pointer"
                         :class="activeFilter === 'all' ? 'bg-sky-700 text-white shadow-lg' : 'bg-gray-100 hover:bg-gray-200'" aria-label="All links">
@@ -52,7 +51,7 @@
         <!-- Links List-->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8 mx-auto lg:max-w-full px-12 lg:px-20">
             <div v-for="link in filteredLinks" :key="link.id" 
-            class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-6 flex flex-col hover:bg-white/90 transition-all duration-300 border border-gray-100 h-full relative"
+            class="bg-white/80 backdrop-blur-lg rounded-xl shadow-md p-6 flex flex-col hover:bg-white/90 transition-all duration-300 border border-gray-100 h-60 relative"
             :class="{'opacity-50': isDragging && draggedItem === link.id}"
             draggable="true"
             @dragstart="dragStart($event, link.id)"
@@ -66,22 +65,29 @@
                 class="absolute -top-2 -right-2 text-white px-3 py-1 rounded-md text-xs uppercase font-medium shadow-md transform rotate-2">
                 {{ link.category }}
                 </span>
-                <div class="flex items-start align-center my-2">
+                <div class="flex items-center justify-center h-16 mb-2">
+                    <h3 class="text-2xl font-bold text-sky-600 line-clamp-2 overflow-hidden">{{ link.title }}</h3>
+                </div>
+                <div class="flex items-start h-8">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-sky-600 mr-2 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                     </svg>
-                    <h3 class="text-lg font-bold text-sky-600 line-clamp-2">{{ link.title }}</h3>
+                    <a :href="link.url" target="_blank" class="text-md text-center text-sky-600 hover:font-bold truncate block">
+                    {{ link.url }}
+                    </a>
                 </div>
-                <a :href="link.url" target="_blank" class="text-md text-sky-600 hover:font-bold truncate flex items-center justify-center mb-4">
-                    <span class="truncate">{{ link.url }}</span>
-                </a>
+        
                 <!-- Tags -->
-                <div v-if="link.tags && link.tags.length > 0" class="flex flex-wrap gap-2 mt-2">
-                    <span v-for="(tag, index) in link.tags" :key="index" 
-                    class="px-2 py-1 bg-gray-100 text-sky-600 text-xs rounded-md hover:bg-gray-200 transition-colors">
-                    {{ tag }}
-                    </span>
+                <div class="flex-grow overflow-hidden max-h-16">
+                    <div v-if="link.tags && link.tags.length > 0" class="flex flex-wrap gap-2 mt-4">
+                        <span v-for="(tag, index) in link.tags" :key="index" 
+                        class="px-2 py-1 bg-gray-100 text-sky-600 text-xs rounded-md hover:bg-gray-200 transition-colors">
+                        {{ tag }}
+                        </span>
+                    </div>
                 </div>
-                <div class="link-actions flex justify-center gap-4 mt-4">
+        
+                <!-- Actions -->
+                <div class="link-actions flex justify-center gap-4 mt-auto pt-2">
                     <button @click="toggleFavorite(link.id)" class="p-2 rounded-full bg-gray-100 text-gray-500 hover:text-white transition-colors duration-200 flex items-center justify-center w-8 h-8 cursor-pointer" aria-label="Toggle favorite">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'text-yellow-300 fill-current': link.favorite}"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
