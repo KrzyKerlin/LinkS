@@ -7,9 +7,9 @@
         {{ message }}
       </div>
     </transition>
-  </template>
+</template>
   
-  <script setup>
+<script setup>
   const props = defineProps({
     message: {
       type: String,
@@ -24,9 +24,9 @@
       default: false
     }
   });
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .toast-message {
     position: fixed;
     bottom: 20px;
@@ -55,4 +55,4 @@
     opacity: 0;
     transform: translate(-50%, 10px);
   }
-  </style>
+</style>
