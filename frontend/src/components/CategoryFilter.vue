@@ -58,7 +58,7 @@
   });
   
   const emit = defineEmits(['setFilter']);
-  const setFilter = () => {
-    emit('setFilter')
+  const setFilter = (filter) => {
+    emit('setFilter', filter)
 }
   </script>
