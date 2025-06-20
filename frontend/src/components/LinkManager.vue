@@ -5,16 +5,31 @@
                 <h1 class="text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-sky-400 to-emerald-400 bg-clip-text text-transparent leading-tight">
                 My <span class="animate-bounce inline-block bg-gradient-to-r from-sky-600 to-emerald-600 bg-clip-text text-transparent">L</span>inkS
                 </h1>
-                    <div class="flex justify-center">
-                        <button @click="openAddLinkModal" class="px-4 py-2 bg-gradient-to-r from-sky-600 to-emerald-600 text-white rounded-lg hover:bg-sky-600 transition-colors flex items-center space-x-2 cursor-pointer animate-bounce">
+                <div class="flex justify-center">
+                    <button @click="openAddLinkModal" class="px-4 py-2 bg-gradient-to-r from-sky-600 to-emerald-600 text-white rounded-lg hover:bg-sky-600 transition-colors flex items-center space-x-2 cursor-pointer animate-bounce">
                             <span>+</span> <h2 class="text-xl">Add Link</h2>
-                        </button>
+                    </button>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
+                        <div class="text-2xl font-bold text-sky-700">{{ links.length }}</div>
+                        <div class="text-sm text-gray-600">All links</div>
                     </div>
+                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
+                        <div class="text-2xl font-bold text-yellow-500">{{ favoriteCount }}</div>
+                        <div class="text-sm text-gray-600">Favorites</div>
+                    </div>
+                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
+                        <div class="text-2xl font-bold text-sky-400">{{ watchCount }}</div>
+                        <div class="text-sm text-gray-600">To watch</div>
+                    </div>
+                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
+                        <div class="text-2xl font-bold text-emerald-600">{{ readCount }}</div>
+                        <div class="text-sm text-gray-600">To read</div>
+                    </div>
+                </div>
                 <!-- Filter By Category -->
-                <CategoryFilter 
-          :activeFilter="activeFilter" 
-          @setFilter="setFilter" 
-        />
+                <CategoryFilter :activeFilter="activeFilter" @setFilter="setFilter" />
                 <div class="mt-4 flex justify-center">
                     <Search @search="handleSearch" />
                 </div>
@@ -201,6 +216,17 @@
         // Saving active filter to localStorage
         localStorage.setItem('activeFilter', filter);
     }
+
+    // Statistics
+    const favoriteCount = computed(() => {
+        return links.value.filter(link => link.favorite === true).length;   
+    });
+    const readCount = computed(() => {
+        return links.value.filter(link => link.category === 'READ').length;
+    });
+    const watchCount = computed(() => {
+        return links.value.filter(link => link.category === 'WATCH').length;
+    });
 
     // Drag and drop links
     const dragStart = (event, linkId) => {

@@ -1,29 +1,40 @@
-# frontend
+# LinkS
+📚 My Links Management App <br />
 
-This template should help get you started developing with Vue 3 in Vite.
+🔥 Description <br />
+My Tools App is a simple application for managing links you want to read or watch from the internet. You can add links, organize them by tags, mark them as favorites, and rearrange their order. The app also allows you to share links and sort them based on your preferences.
 
-## Recommended IDE Setup
+🌍 Key Features <br />
+Add Links: Easily add links to your reading or watching list. <br />
+Tags: Tag links to categorize them (e.g., "tutorial", "reading", "videos"). <br />
+Favorites: Mark links as favorites for quick access. <br />
+Rearrange: Change the order of links by dragging and dropping them. <br />
+Search: Find links by title, URL or tags. <br />
+Share: Share your links with others. <br />
+Delete: Delete viewed/readed URL (link) <br />
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+🛠️ Technologies <br />
+Vue.js
+Vite
+Tailwind CSS
 
-## Customize configuration
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
+🚀 Project Setup <br />
 ```sh
 npm install
 ```
 
 ### Compile and Hot-Reload for Development
-
 ```sh
+cd frontend
 npm run dev
 ```
 
 ### Compile and Minify for Production
-
 ```sh
 npm run build
 ```
+
+📜 License <br />
+MIT License. See the LICENSE file for more details. <br />
+LIVE demo: https://link-s-ghgv.vercel.app/
