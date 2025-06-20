@@ -10,26 +10,8 @@
                             <span>+</span> <h2 class="text-xl">Add Link</h2>
                     </button>
                 </div>
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
-                        <div class="text-2xl font-bold text-sky-700">{{ links.length }}</div>
-                        <div class="text-sm text-gray-600">All links</div>
-                    </div>
-                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
-                        <div class="text-2xl font-bold text-yellow-500">{{ favoriteCount }}</div>
-                        <div class="text-sm text-gray-600">Favorites</div>
-                    </div>
-                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
-                        <div class="text-2xl font-bold text-sky-400">{{ watchCount }}</div>
-                        <div class="text-sm text-gray-600">To watch</div>
-                    </div>
-                    <div class="bg-white/60 backdrop-blur-sm rounded-xl p-4 text-center hover:bg-white/70 transition-all duration-200 shadow-sm">
-                        <div class="text-2xl font-bold text-emerald-600">{{ readCount }}</div>
-                        <div class="text-sm text-gray-600">To read</div>
-                    </div>
-                </div>
                 <!-- Filter By Category -->
-                <CategoryFilter :activeFilter="activeFilter" @setFilter="setFilter" />
+                <CategoryFilter :activeFilter="activeFilter" :totalCount="links.length" :favoriteCount="favoriteCount" :readCount="readCount" :watchCount="watchCount" @setFilter="setFilter" />
                 <div class="mt-4 flex justify-center">
                     <Search @search="handleSearch" />
                 </div>
