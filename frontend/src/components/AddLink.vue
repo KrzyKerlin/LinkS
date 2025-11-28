@@ -66,7 +66,8 @@
                             <input type="radio" name="category" value="WATCH" v-model="linkData.category" class="absolute opacity-0 w-0 h-0" />
                             <div :class="linkData.category === 'WATCH' ? 'bg-gradient-to-br from-sky-400 to-emerald-400 border-r-sky-400 text-white' : 'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
                             class="flex flex-col items-center justify-center py-2 px-2 border-2 rounded-lg transition-all duration-200">
-                                <span class="text-xl mb-1">▶</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                                </svg>
                                 <span class="font-medium text-sm">WATCH</span>
                             </div>
                         </label>        
@@ -75,7 +76,8 @@
                             <input type="radio" name="category" value="READ" v-model="linkData.category" class="absolute opacity-0 w-0 h-0" />
                             <div :class="linkData.category === 'READ' ? 'bg-gradient-to-br from-sky-400 to-emerald-400 border-sky-400 text-white' : 'bg-white hover:bg-gray-50 border-gray-300 text-gray-700'"
                             class="flex flex-col items-center justify-center py-2 px-2 border-2 rounded-lg transition-all duration-200">
-                                <span class="text-xl mb-1">📄</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
                                 <span class="font-medium text-sm">READ</span>
                             </div>
                         </label>

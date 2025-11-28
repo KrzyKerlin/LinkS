@@ -33,22 +33,20 @@
                 </svg>
                 <span :class="{'bg-sky-400': link.category === 'WATCH', 'bg-emerald-400': link.category === 'READ' }" 
                 class="absolute -top-2 -right-2 text-white px-3 py-1 rounded-md text-xs uppercase font-medium shadow-md transform rotate-2">
-                {{ link.category }}
+                    <svg v-if="link.category === 'WATCH'" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    <svg v-else-if="link.category === 'READ'" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
                 </span>
 
                 <a :href="link.url" target="_blank" 
                 class="flex items-center justify-center gap-2 min-h-14 mb-4 mt-4 group cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="h-5 w-5 text-sky-500 flex-shrink-0 group-hover:text-sky-700 transition-colors" 
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor"> 
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
                     <h3 class="text-2xl font-bold text-sky-600 line-clamp-2 overflow-hidden text-center group-hover:text-sky-800 transition-colors">{{ link.title }}
                     </h3>
                 </a>
 
                 <!-- Actions -->
-                <div class="link-actions flex justify-center items-center gap-5 pt-3 border-t border-gray-100">
+                <div class="link-actions flex justify-center items-center gap-5 pt-3">
                     <button @click="toggleFavorite(link.id)" class="p-2.5 rounded-full bg-gray-100 hover:bg-yellow-400 text-gray-500 hover:text-white transition-all duration-200 flex items-center justify-center w-10 h-10 cursor-pointer shadow-sm hover:shadow-md" 
                     :class="{'bg-yellow-400 text-white': link.favorite}"
                     aria-label="Toggle favorite">
