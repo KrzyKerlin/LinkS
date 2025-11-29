@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, onBeforeUnmount, nextTick } from 'vue';
 
 const isSearchOpen = ref(false);
@@ -71,13 +71,13 @@ const closeSearch = () => {
   clearSearch(); 
 };
 
-const handleKeydown = (event) => {
+const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') {
     closeSearch();
   }
 };
 
-const handleDocumentKeydown = (event) => {
+const handleDocumentKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape' && isSearchOpen.value) {
     closeSearch();
   }

@@ -94,7 +94,7 @@
                     <!-- Tags -->
                     <div v-if="link.tags && link.tags.length > 0" class="flex flex-wrap gap-2 justify-center">
                         <span v-for="(tag, index) in link.tags" :key="index" 
-                        class="px-3 py-1.5 bg-gradient-to-r from-sky-50 to-sky-100 text-sky-600 text-xs font-medium rounded-full hover:from-sky-100 hover:to-sky-200 transition-all cursor-default shadow-sm">#{{ tag }}
+                        class="px-3 py-1.5 bg-gradient-to-r from-sky-50 to-sky-100 text-sky-600 text-xs font-medium rounded-full hover:from-sky-100 hover:to-sky-200 transition-all cursor-default shadow-sm">{{ tag }}
                         </span>
                     </div>
                 </div>
